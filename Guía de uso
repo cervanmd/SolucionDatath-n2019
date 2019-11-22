@@ -1,0 +1,8 @@
+# SolucionDatath-n2019
+#La solución del equipo MCPI al reto Datathón 2019
+
+#En este repositorio recabamos los códigos para recrear el experimento de solución creado por el equipo MCPI 3 para el reto Datathón 2019.
+
+#La solución fue modelada usando el software estadístico de licencia libre R en su versión 3.6.0
+#Se recomienda el uso de RStudio para recrear nuestra solución. En este repositorio se encuentra nuestra base de datos con las #modificaciones respecto a los valores ausentes, además de haber corregido los errores de formato de la base de datos original.
+
