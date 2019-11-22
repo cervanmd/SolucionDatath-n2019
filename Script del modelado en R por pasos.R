@@ -1,7 +1,10 @@
-# 1er paso:  poner la direcci髇 donde se tiene guardada la base de datos de trabajo
+# 1er paso:  poner la direcci贸n donde se tiene guardada la base de datos que se encuentra en este repositorio.
 renal.ordenado.numerico.vacio <- read.delim("C:/Users/Daniel Cervantes/Desktop/Datathon2019-master/renal ordenado numerico vacio.txt") 
 
-##cargamos o instalamos las librer韆s que se utilizar醤
+##cargamos o instalamos las librer铆as que se utilizar谩n
+install.packages("galgo")
+install.packages("caret")
+
 library(galgo)
 library(mice)
 library(randomForest)
@@ -15,7 +18,7 @@ data<- renal.ordenado.numerico.vacio
 data.na <-data
 
 for (i in 1:4) data.na[sample(150, sample(50)), i]<- NA
-#imputamos usando randomForest para tener un m閠odo de imputaci髇 imparcial que no altere estad韘ticamente a nuestro dataset
+#imputamos usando randomForest para tener un m茅todo de imputaci贸n imparcial que no altere estad铆sticamente a nuestro dataset
 data.imputed <- rfImpute(class ~.,data.na)
 
 IndicesEntrenamiento <- createDataPartition(y = data.imputed$class,
@@ -24,15 +27,15 @@ IndicesEntrenamiento <- createDataPartition(y = data.imputed$class,
 Entrenamiento <- data.imputed[IndicesEntrenamiento,]
 Test <- data.imputed[-IndicesEntrenamiento,]
 
-#transponemos nuestras bases de datos para poder realizar un forward selection por algoritmos gen閠icos
+#transponemos nuestras bases de datos para poder realizar un forward selection por algoritmos gen茅ticos
 
 ALL.classes<-data.imputed$class
 ALL <- data.imputed[,c(2:23)]
 ALL<- t(ALL)
 ALL.classes <- t(ALL.classes)
 
-##Tercer paso: iniciamos a correr el algoritmo gen閠ico por discriminaci髇 lineal. Podemos cambiar en el apartado de 
-# "classification method" por el m閠odo de clasificaci髇 de nuestra preferencia
+##Tercer paso: iniciamos a correr el algoritmo gen茅tico por discriminaci贸n lineal. Podemos cambiar en el apartado de 
+# "classification method" por el m茅todo de clasificaci贸n de nuestra preferencia
 bb.nearcent<-configBB.VarSel(data = ALL,
                              classes = ALL.classes,
                              classification.method = "mlhd",
@@ -50,7 +53,7 @@ blast(bb.nearcent)
 
 plot(bb.nearcent, type = "fitness")
 
-#matrices de confusi髇
+#matrices de confusi贸n
 plot(bb.nearcent, type = "confusion")
 
 fsm<-forwardSelectionModels(bb.nearcent)
@@ -61,8 +64,8 @@ mode<-unlist(fsm$models[1])
 
 rownames(ALL)[mode]
 
-#modelado usando m醧uina de soporte de vectores, en caso de desear un m閠odo de modelado distinto, elegimos el 
-#m閠odo de nuestra preferencia
+#modelado usando m谩quina de soporte de vectores, en caso de desear un m茅todo de modelado distinto, elegimos el 
+#m茅todo de nuestra preferencia
 modelosop <- svm(Entrenamiento$class ~Entrenamiento$pcv + Entrenamiento$appet + Entrenamiento$al)
 
 
@@ -74,7 +77,7 @@ pred <- predict(modelosop, data=Test)
 fitted.results <- pred
 
 fitted.results
-##graficamos su curva ROC para evaluar su eficiencia de predicci髇
+##graficamos su curva ROC para evaluar su eficiencia de predicci贸n
 curvas <- roc(Entrenamiento$class, predictor = as.numeric(fitted.results))
 plot(curvas)
 lines(curvas, col="blue")
@@ -90,7 +93,7 @@ cor(Entrenamiento)
 
 puntodecorte
 
-##realizamos la matriz de confusi髇 para tener una m閠rica m醩 de evaluaci髇 de calidad
+##realizamos la matriz de confusi贸n para tener una m茅trica m谩s de evaluaci贸n de calidad
 fitted.results <- ifelse(pred>puntodecorte,1,0)
 matrizgalgo <- confusionMatrix(data=as.factor(fitted.results),reference = as.factor(Entrenamiento$class))
 matrizgalgo
