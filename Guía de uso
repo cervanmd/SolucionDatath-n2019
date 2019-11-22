@@ -11,6 +11,14 @@ En el Script principal de R están enlistados los paquetes necesarios para reali
 cada paso enlistado para repetir el experimento
 
 
+Además, anexamos una aplicación en Python donde programamos el modelo más óptimo de clasificación, el cuál en el caso de desear hacer una
+prueba no invasiva, con los resultados de una muestra de gravedad relativa, podremos detectar con 92% de exactitud si el paciente
+sufre riesgo de tener una falla renal. 
+En caso de necesitar una exactitud más alta, podemos complementar el análisis con una prueba "pcv", en cual aumenta la exactitud de nuestro
+modelo a 98.7%
+En este trabajo explicamos todo el proceso para justificar cómo de 25 parámetros originales, podemos llegar a pruebas con una exactitud
+alta usando solo uno o dos parámetros.
+
 
 El video explicando la solución se encuentra en la siguiente liga de Youtube:
 https://youtu.be/RSvtx_cmXK8
