@@ -6,7 +6,7 @@ install.packages("galgo")
 install.packages("caret")
 
 library(galgo)
-library(mice)
+library(proc)
 library(randomForest)
 library(caret)
 
