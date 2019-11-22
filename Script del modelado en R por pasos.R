@@ -21,6 +21,7 @@ for (i in 1:4) data.na[sample(150, sample(50)), i]<- NA
 #imputamos usando randomForest para tener un método de imputación imparcial que no altere estadísticamente a nuestro dataset
 data.imputed <- rfImpute(class ~.,data.na)
 
+#se hace la partición de 70-Training, 30-Testing
 IndicesEntrenamiento <- createDataPartition(y = data.imputed$class,
                                             p = 0.7,
                                             list = FALSE)
@@ -64,26 +65,32 @@ mode<-unlist(fsm$models[1])
 
 rownames(ALL)[mode]
 
-#modelado usando máquina de soporte de vectores, en caso de desear un método de modelado distinto, elegimos el 
-#método de nuestra preferencia
+#modelado usando máquina de soporte de vectores, en caso de desear un método de modelado distinto, elegimos el método de nuestra preferencia
+#En las líneas 70, 73 y 76 ELEGIR SOLO UN MODELO DE CLASIFICACIÓN PARA EVALUAR Y VALIDAR EN LOS PRÓXIMOS PASOS, es decir, correr solo una de las líneas
 modelosop <- svm(Entrenamiento$class ~Entrenamiento$pcv + Entrenamiento$appet + Entrenamiento$al)
 
+#probamos el modelo como regresión logística
+modelosop <- glm(Entrenamiento$class ~ Entrenamiento$sg)
 
-modelosop
+#se tiene que repetir el análisis para cada propuesta
+modelosop <- svm(Entrenamiento$class ~ Entrenamiento$sg + class ~Entrenamiento$pcv)
 
 
+#modelosop
+#Predecimos usando nuestro modelo los datos de Testing que partimos anteriormente
 pred <- predict(modelosop, data=Test)
 
-fitted.results <- pred
 
+fitted.results <- pred
 fitted.results
 ##graficamos su curva ROC para evaluar su eficiencia de predicción
 curvas <- roc(Entrenamiento$class, predictor = as.numeric(fitted.results))
 plot(curvas)
 lines(curvas, col="blue")
+#imprimimos el área bajo la curva ROC
 curvas
 
-###punto ideal de corte
+###punto ideal de corte de la curva ROC
 
 cor(Entrenamiento)
 
